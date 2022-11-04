@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Hove</h1>
-    <post @send="send" />
-    <div v-for="post in M" :key="post">
+    <post @send="addPost" />
+    <div v-for="post in hello" :key="post">
       <p @click="remove(post._id)">{{ post?._id }}</p>
       <span>{{ post?.text }}</span>
     </div>
@@ -28,27 +28,32 @@ export default defineNuxtComponent({
         await $fetch(`http://localhost:5000/api/posts/${id}`, {
           method: "DELETE",
         });
-        this.Arr = await $fetch("http://localhost:5000/api/posts");
+        this.hello = await $fetch("http://localhost:5000/api/posts");
       } catch (e) {
         console.log(e);
       }
     },
-    async send(value) {
+    async addPost(value) {
       try {
-        await $fetch("http://localhost:5000/api/posts", {
+        await $fetch("https://breakingbadapi.com/api/characters", {
           method: "POST",
           body: { text: value },
         });
-        this.Arr = await $fetch("http://localhost:5000/api/posts");
+        this.hello = await $fetch("http://localhost:5000/api/posts");
       } catch (e) {
+        this.$error({ statusCode: 404, message: "Post not found" });
         console.log(e);
       }
     },
   },
-  async asyncData() {
-    return { hello: await $fetch("http://localhost:5000/api/posts") };
+  async asyncData({$error}) {
+    try {
+      return { hello: await $fetch("https://breakingbadapi.com/api/characters/0") };
+    } catch {
+      $error({ statusCode: 404, message: "Post not found" });
+    }
+    
   },
-  // http://localhost:5000
 });
 </script>
 

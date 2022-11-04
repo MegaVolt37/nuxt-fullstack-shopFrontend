@@ -25,6 +25,7 @@ export default defineNuxtComponent({
   methods: {
     send() {
       this.$emit("send", this.is);
+      this.is = "";
     },
   },
 });
