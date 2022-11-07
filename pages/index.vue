@@ -35,24 +35,23 @@ export default defineNuxtComponent({
     },
     async addPost(value) {
       try {
-        await $fetch("https://breakingbadapi.com/api/characters", {
-          method: "POST",
-          body: { text: value },
-        });
-        this.hello = await $fetch("http://localhost:5000/api/posts");
+        // await $fetch("https://jsonыplaceholder.typicode.com/posts", {
+        //   method: "GET",
+        // });
+        this.hello = await $fetch(
+          "https://jsonplaceholder.typicode.com/postss"
+        );
       } catch (e) {
-        this.$error({ statusCode: 404, message: "Post not found" });
-        console.log(e);
+        throw e;
       }
     },
   },
-  async asyncData({$error}) {
+  async asyncData({}) {
     try {
-      return { hello: await $fetch("https://breakingbadapi.com/api/characters/0") };
-    } catch {
-      $error({ statusCode: 404, message: "Post not found" });
-    }
-    
+      return {
+        hello: await $fetch("https://jsonplaceholder.typicode.com/posts"),
+      };
+    } catch {}
   },
 });
 </script>
