@@ -9,10 +9,14 @@
     "start": "env NITRO_HOST=127.0.0.1 node .output/server/index.mjs"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0-rc.13"
+    "nuxt": "^3.0.0-rc.13",
+    "sass": "^1.56.1",
+    "sass-loader": "^13.1.0"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
+    "@pinia/nuxt": "^0.4.3",
+    "@vue/composition-api": "^1.7.1",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "defu": "^6.1.0",
@@ -21,6 +25,8 @@
     "mongodb": "^4.11.0",
     "mongoose": "^6.6.6",
     "nodemon": "^2.0.20",
-    "nuxt-proxy": "^0.2.4"
+    "nuxt-proxy": "^0.2.4",
+    "pinia": "^2.0.23",
+    "vuex": "^4.0.2"
   }
 }

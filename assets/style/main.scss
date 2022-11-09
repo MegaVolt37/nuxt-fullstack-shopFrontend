@@ -1,0 +1,58 @@
+*,
+body,
+html,
+ul,
+li,
+a {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+h3.block__title {
+    font-family: "Rubik700";
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 150%;
+    color: #414141;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+a {
+    color: initial;
+    text-decoration: none;
+}
+
+section {
+    margin-top: 70px;
+    background-color: #fbf8ec;
+    padding-bottom: 80px;
+}
+
+img {
+    max-width: 100%;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+button {
+    border: none;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+
+@media (max-width: 1250px) {
+    .container {
+        padding: 0 20px;
+    }
+}
