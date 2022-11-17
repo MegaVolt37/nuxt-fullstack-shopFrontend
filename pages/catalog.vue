@@ -2,7 +2,16 @@
   <div class="catalog">
     <div class="container">
       <h1 class="catalog__title" @click="getImgUrl()">Каталог</h1>
-      <div class="catalog__content">
+      <h3 @click="remove(allCards[0]?._id)">{{ allCards[0]?.name }}</h3>
+      <h3>{{ allCards[0]?.description }}</h3>
+      <img :src="allCards[0]?.image" alt="" />
+      <input
+        class="downloadFile"
+        type="file"
+        @change="changeHandler"
+        accept="image/jpeg,image/png,image/gif"
+      />
+      <div class="catalog__content" @click="addPost">
         <div
           class="catalog__content-item"
           v-for="(catalog, index) in 5"
@@ -20,18 +29,72 @@
 import { mapState, mapActions } from "pinia";
 import { storeCatalog } from "~/store/Catalog";
 import img from "~/assets/img/Catalog/0.jpg";
-export default {
+export default defineNuxtComponent({
   name: "catalog",
   data() {
     return {
       Images: [],
       img,
+      result: "",
+      res: "",
     };
   },
   computed: {
     ...mapState(storeCatalog, ["Catalog", "getProductCatalog"]),
   },
+  async asyncData({}) {
+    try {
+      return {
+        allCards: await $fetch("http://localhost:5000/api/catalog"),
+      };
+    } catch (e) {
+      console.log(e);
+    }
+  },
   methods: {
+    async changeHandler() {
+      const input = document.querySelector(".downloadFile");
+      const file = input.files[0];
+      let one = await readBase(file);
+      function readBase(value) {
+        return new Promise((resolve) => {
+          let reader = new FileReader();
+          reader.onloadend = function () {
+            resolve(reader.result);
+          };
+          reader.readAsDataURL(value);
+        });
+      }
+      this.result = one;
+    },
+    async remove(id) {
+      console.log(id);
+      try {
+        await $fetch(`http://localhost:5000/api/catalog/${id}`, {
+          method: "DELETE",
+        });
+        this.allCards = await $fetch("http://localhost:5000/api/catalog");
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async addPost() {
+      try {
+        await $fetch("http://localhost:5000/api/catalog", {
+          method: "POST",
+          body: {
+            name: "request.body.name",
+            description: "request.body.description",
+            price: "request.body.price",
+            count: "request.body.count",
+            image: this.result,
+          },
+        });
+        this.res = await $fetch("http://localhost:5000/api/catalog");
+      } catch (e) {
+        throw e;
+      }
+    },
     ...mapActions(storeCatalog, ["increment"]),
     getImgUrl(index) {
       // let Arr = [];
@@ -60,7 +123,7 @@ export default {
       ],
     };
   },
-};
+});
 </script>
 <style lang="scss">
 .catalog {
