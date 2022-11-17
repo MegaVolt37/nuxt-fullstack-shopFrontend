@@ -9,7 +9,7 @@
     "start": "env NITRO_HOST=127.0.0.1 node .output/server/index.mjs"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0-rc.13",
+    "nuxt": "3.0.0",
     "sass": "^1.56.1",
     "sass-loader": "^13.1.0"
   },
