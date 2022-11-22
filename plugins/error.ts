@@ -9,7 +9,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     // }
   })
   nuxtApp.hook('app:error', (..._args) => {
-    console.log('app:error')
+    console.log('app:error', _args)
     // if (process.client) {
     //   console.log(..._args)
     // }

@@ -14,6 +14,11 @@ export default defineNuxtConfig({
       },
     ],
   ],
+  runtimeConfig: {
+    public: {
+      baseURL: process.env.BASE_URL || 'http://localhost:5000/',
+    },
+  },
   css: ["@/assets/css/main.css"],
   vite: {
     css: {

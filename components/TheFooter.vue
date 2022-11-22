@@ -3,7 +3,7 @@
     <div class="container">
       <div class="Footer__content">
         <div class="logo" @click="goToHome">
-          <img src="@/assets/icon/Footer/logo.svg" alt="logo" />
+          <img src="@/assets/icon/Footer/Logo.png" alt="logo" />
         </div>
         <ul class="footer__links">
           <li
@@ -81,6 +81,10 @@ export default {
     justify-content: space-between;
     .logo {
       cursor: pointer;
+      img {
+        object-fit: contain;
+        max-width: 95px;
+      }
     }
   }
 }

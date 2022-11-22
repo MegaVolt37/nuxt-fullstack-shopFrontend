@@ -1,7 +1,9 @@
 <template>
   <div>
     <the-header />
-    <slot />
+    <section>
+      <slot />
+    </section>
     <the-footer />
   </div>
 </template>

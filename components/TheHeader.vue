@@ -3,7 +3,12 @@
     <div class="container">
       <nav class="header__nav">
         <div class="header__logo">
-          <img src="@/assets/icon/Header/Logo.svg" alt="Logo" />
+          <img
+            src="@/assets/icon/Header/Logo.png"
+            alt="Logo"
+            width="150"
+            height="30"
+          />
         </div>
         <div class="header__catalog">
           <button
@@ -15,11 +20,11 @@
             <HeaderCatalog v-if="isOpenCatalog" />
           </button>
         </div>
-        <div class="header__search">
+        <div class="header__search" :style="styleSearch">
           <input type="text" placeholder="Найти товар" />
           <img src="@/assets/icon/Header/search.svg" alt="search" />
         </div>
-        <ul class="header__list">
+        <ul class="header__list" v-if="isLogin">
           <li class="header__list-item">
             <img src="@/assets/icon/Header/IconFavorites.svg" alt="Favorites" />
             <p>Избранное</p>
@@ -39,18 +44,38 @@
             <Badge />
           </li>
         </ul>
-        <div class="header__profile">
+        <div
+          class="header__profile"
+          :class="{ not_auth: !isLogin }"
+          @click="showAuth"
+        >
           <img
+            v-if="isLogin"
             class="header__profile-avatar"
             src="@/assets/img/avatar.png"
             alt="Avatar"
           />
-          <p>Алексей</p>
+          <p>{{ readProfile }}</p>
           <img src="@/assets/icon/Header/chevronDown.svg" alt="chevronDown" />
         </div>
       </nav>
     </div>
-
+    <modal-window
+      class="header__modal-auth"
+      :modalTitle="modalTitle"
+      v-if="isShowAuth"
+      @closeModal="closeModalAuth"
+    >
+      <header-auth-block @openRegister="openRegister" />
+    </modal-window>
+    <modal-window
+      class="header__modal-auth"
+      :modalTitle="modalTitleRegister"
+      v-if="isShowRegister"
+      @closeModal="closeModalRegister"
+    >
+      <header-register-block @register="closeModalRegister" />
+    </modal-window>
     <!-- <ul>
       <li>
         <nuxt-link to="/todos">Домой</nuxt-link>
@@ -62,11 +87,16 @@
 <script>
 import Badge from "./Content/Badge/Badge.vue";
 import HeaderCatalog from "./Content/Header/HeaderCatalog.vue";
+import ModalWindow from "./Content/ModalWindow.vue";
 export default {
   name: "Header",
   data() {
     return {
       isOpenCatalog: false,
+      isShowAuth: false,
+      isShowRegister: false,
+      modalTitle: "Вход",
+      modalTitleRegister: "Регистрация",
     };
   },
   methods: {
@@ -76,10 +106,39 @@ export default {
     closeCatalog() {
       this.isOpenCatalog = false;
     },
+    showAuth() {
+      if (!this.isLogin) {
+        this.isShowAuth = true;
+      }
+    },
+    openRegister() {
+      this.isShowAuth = false;
+      this.isShowRegister = true;
+    },
+    closeModalAuth() {
+      this.isShowAuth = false;
+    },
+    closeModalRegister() {
+      this.isShowRegister = false;
+    },
+  },
+  mounted() {},
+  computed: {
+    readProfile() {
+      return this.isLogin ? "Алексей" : "Войти";
+    },
+    styleSearch() {
+      console.log(this.$nuxt);
+      return this.isLogin ? "" : "max-width: none";
+    },
+    isLogin() {
+      return process.client ? localStorage.getItem("token") : false;
+    },
   },
   components: {
     Badge,
     HeaderCatalog,
+    ModalWindow,
   },
 };
 </script>
@@ -99,6 +158,10 @@ export default {
   }
   &__logo {
     cursor: pointer;
+    img {
+      object-fit: contain;
+      margin-left: -20px;
+    }
   }
   &__catalog {
     button {
@@ -181,12 +244,16 @@ export default {
     display: flex;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
     &-avatar {
       width: 40px;
       height: 40px;
       border-radius: 50%;
     }
     img {
+    }
+    &.not_auth {
+      margin-left: 30px;
     }
   }
 }
