@@ -18,7 +18,7 @@
         />
       </div>
     </div>
-    <button class="modal__auth-login" @click="login(formData)">Вход</button>
+    <button class="modal__auth-login" @click="sendLogin">Вход</button>
     <div class="modal__auth-buttons">
       <button
         class="modal__auth-buttons-register"
@@ -45,13 +45,19 @@ export default {
   },
   computed: {},
   methods: {
-    ...mapActions(storeAuth, ["login"]),
-    // login() {
-    //   this.login()
-    //   this.$store.dispatch("Auth/login", formData);
-    // },
+    ...mapActions(storeAuth, { login: "login" }),
+    async sendLogin() {
+      try {
+        await this.$auth.loginWith("local", {
+          body: this.formData,
+        });
+        this.$emit("closeModal");
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
-  emits: ["openRegister"],
+  emits: ["openRegister", "closeModal"],
 };
 </script>
 

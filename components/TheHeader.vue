@@ -66,7 +66,10 @@
       v-if="isShowAuth"
       @closeModal="closeModalAuth"
     >
-      <header-auth-block @openRegister="openRegister" />
+      <header-auth-block
+        @openRegister="openRegister"
+        @closeModal="closeModalAuth"
+      />
     </modal-window>
     <modal-window
       class="header__modal-auth"
@@ -109,6 +112,8 @@ export default {
     showAuth() {
       if (!this.isLogin) {
         this.isShowAuth = true;
+      } else {
+        this.$auth.logout();
       }
     },
     openRegister() {
@@ -122,17 +127,15 @@ export default {
       this.isShowRegister = false;
     },
   },
-  mounted() {},
   computed: {
     readProfile() {
       return this.isLogin ? "Алексей" : "Войти";
     },
     styleSearch() {
-      console.log(this.$nuxt);
       return this.isLogin ? "" : "max-width: none";
     },
     isLogin() {
-      return process.client ? localStorage.getItem("token") : false;
+      return this.$auth.loggedIn;
     },
   },
   components: {
