@@ -52,7 +52,7 @@ export default defineNuxtConfig({
       local: {
         token: {
           property: 'token',
-          maxAge: 1800,
+          maxAge: 60 * 30,
           global: true,
         },
         user: {

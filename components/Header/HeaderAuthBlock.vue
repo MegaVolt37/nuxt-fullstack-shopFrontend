@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import { mapActions } from "pinia";
-import { storeAuth } from "~/store/Auth";
+// import { mapActions } from "pinia";
+// import { storeAuth } from "~/store/Auth";
 export default {
   data() {
     return {
@@ -45,7 +45,6 @@ export default {
   },
   computed: {},
   methods: {
-    ...mapActions(storeAuth, { login: "login" }),
     async sendLogin() {
       try {
         await this.$auth.loginWith("local", {

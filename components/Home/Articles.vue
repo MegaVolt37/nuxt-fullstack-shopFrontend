@@ -10,16 +10,18 @@
     <div class="articles__content">
       <div
         class="articles__item"
-        v-for="(Article, index) in Articles"
+        v-for="(Article, index) in Articles?.slice(-3).reverse()"
         :key="index"
       >
         <div class="articles__item__top">
-          <img src="@/assets/img/Home/ArticlesItem.jpg" alt="Articles_item" />
+          <img :src="Article.image" alt="Изображение статьи" />
         </div>
         <div class="articles__item__content">
-          <span class="articles__item__content-date">{{ Article.date }}</span>
+          <span class="articles__item__content-date">{{
+            new Date(Article.createdAt).toLocaleDateString()
+          }}</span>
           <h6 class="articles__item__content-title">
-            {{ Article.name }}
+            {{ Article.title }}
           </h6>
           <p class="articles__item__content-text">
             {{ Article.text }}
@@ -33,6 +35,11 @@
 <script>
 export default {
   name: "Articles",
+  data() {
+    return {
+      posts: "",
+    };
+  },
   props: {
     Articles: Array,
   },

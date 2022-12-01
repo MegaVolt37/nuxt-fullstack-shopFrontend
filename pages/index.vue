@@ -19,7 +19,7 @@
         </div>
         <suggestions :Suggestions="Suggestions" />
         <maps />
-        <articles :Articles="getHomeArticles" />
+        <articles :Articles="posts" />
       </div>
     </div>
   </div>
@@ -70,7 +70,6 @@ export default defineNuxtComponent({
   },
   methods: {
     async remove(id) {
-      console.log(id);
       try {
         await $fetch(`http://localhost:5000/api/posts/${id}`, {
           method: "DELETE",
@@ -81,9 +80,9 @@ export default defineNuxtComponent({
       }
     },
     async addPost(value) {
+      console.log(value);
       try {
-        await $fetch("http://localhost:5000/api/posts", {
-          method: "POST",
+        await $http.$post("http://localhost:5000/api/posts", {
           body: { text: value },
         });
         this.hello = await $fetch("http://localhost:5000/api/posts");
@@ -104,13 +103,15 @@ export default defineNuxtComponent({
       this.$store.dispatch("setLists", 5);
     },
   },
-  async asyncData({}) {
+  async asyncData({ $http }) {
     try {
       return {
         hello: await $fetch("http://localhost:5000/api/posts"),
+        posts: await $http.$get("http://localhost:5000/api/catalog/post"),
       };
     } catch {}
   },
+
   head() {
     return {
       title: "Главная",
