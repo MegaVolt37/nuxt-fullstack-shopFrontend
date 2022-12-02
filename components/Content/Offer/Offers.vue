@@ -3,12 +3,12 @@
     <div class="offers__wrapper-top">
       <h3 class="block__title">{{ Title }}</h3>
       <div class="offers__wrapper-link">
-        <span>Все акции</span
+        <span>Все {{Title.toLowerCase()}}</span
         ><img src="@/assets/icon/Header/chevronDown.svg" alt="chevronDown" />
       </div>
     </div>
     <div class="offers__wrapper-items">
-      <Offer v-for="(offer, index) in Products" :key="index" :offer="offer" />
+      <Offer v-for="(offer, index) in Products" :key="index" :offer="offer" :indexBlok="indexBlok"/>
     </div>
   </div>
 </template>
@@ -19,6 +19,7 @@ export default {
   props: {
     Products: Array,
     Title: String,
+    indexBlok: Number,
   },
   components: {
     Offer,

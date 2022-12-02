@@ -1,20 +1,15 @@
 <template>
   <div>
-    <h1>Hove</h1>
-    <post @send="addPost" />
-    <div v-for="post in hello" :key="post">
-      <p @click="remove(post._id)">{{ post?._id }}</p>
-      <span>{{ post?.text }}</span>
-    </div>
     <advertising />
     <div class="section__bacground">
       <div class="container">
         <div class="products">
           <offers
-            v-for="(list, index) in productArray"
+            v-for="(list, index) in arrayProduct"
             :key="index"
             :Products="list.items"
             :Title="list.Title"
+            :indexBlok="index"
           />
         </div>
         <suggestions :Suggestions="Suggestions" />
@@ -104,10 +99,22 @@ export default defineNuxtComponent({
     },
   },
   async asyncData({ $http }) {
+    const arrayProduct = [];
     try {
+      const productsStock = await $http.$get(
+        "http://localhost:5000/api/catalog/product/stock"
+      );
+      const productsNews = await $http.$get(
+        "http://localhost:5000/api/catalog/product/news"
+      );
+      arrayProduct.push(
+        { Title: "Акции", items: productsStock },
+        { Title: "Новинки", items: productsNews }
+      );
       return {
         hello: await $fetch("http://localhost:5000/api/posts"),
         posts: await $http.$get("http://localhost:5000/api/catalog/post"),
+        arrayProduct,
       };
     } catch {}
   },

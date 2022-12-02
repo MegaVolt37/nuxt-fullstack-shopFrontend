@@ -3,7 +3,7 @@
     <div class="articles__header">
       <h3 class="block__title">Статьи</h3>
       <div class="articles__header-link">
-        <span>Все акции</span
+        <span>Все статьи</span
         ><img src="@/assets/icon/Header/chevronDown.svg" alt="chevronDown" />
       </div>
     </div>
@@ -79,6 +79,13 @@ export default {
 .articles__item__top {
   border-radius: 4px 4px 0 0;
   overflow: hidden;
+  height: 100%;
+  img {
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
 }
 .articles__item__content {
   padding: 10px;

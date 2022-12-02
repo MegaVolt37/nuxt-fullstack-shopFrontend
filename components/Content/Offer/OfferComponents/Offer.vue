@@ -5,21 +5,21 @@
       <div class="offer__top-favorites">
         <img src="@/assets/icon/Header/IconFavorites.svg" alt="IconFaforites" />
       </div>
-      <BadgeSale />
+      <BadgeSale v-if="indexBlok == 0 && offer?.stock" :count="offer?.stock" />
     </div>
     <div class="offer__middle">
       <div class="offer__price">
         <div class="offer__price-card">
-          <p>{{ offer.price_card.toFixed(2) }} ₽</p>
+          <p>{{ offer?.discount?.toFixed(2) }} ₽</p>
           <span>С картой</span>
         </div>
         <div class="offer__price-standart">
-          <p>{{ offer.price.toFixed(2) }} ₽</p>
+          <p>{{ offer?.price?.toFixed(2) }} ₽</p>
           <span>Обычная</span>
         </div>
       </div>
       <div class="offer__product">
-        <p>{{ offer.name }}</p>
+        <p>{{ offer?.name }}</p>
         <div class="offer__product-rating">
           <Rating
             v-for="index of 5"
@@ -44,6 +44,7 @@ export default {
   name: "Offer",
   props: {
     offer: Object,
+    indexBlok: Number,
   },
   components: {
     BadgeSale,

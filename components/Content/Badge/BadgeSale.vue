@@ -1,6 +1,6 @@
 <template>
   <div class="product__badge">
-    <span>-50%</span>
+    <span>-{{ count }}%</span>
   </div>
 </template>
 <script>

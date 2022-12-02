@@ -129,7 +129,7 @@ export default {
   },
   computed: {
     readProfile() {
-      return this.isLogin ? "Алексей" : "Войти";
+      return this.isLogin ? this.$auth.user.fullName : "Войти";
     },
     styleSearch() {
       return this.isLogin ? "" : "max-width: none";
