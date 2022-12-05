@@ -38,7 +38,11 @@ export default defineNuxtConfig({
     '~/components/Content/Badge',
     '~/components/Content/Header',
     '~/components/Content/Offer',
+    '~/components/Content/Checkbox',
+    '~/components/Content/Choiser',
     '~/components/Content/Rating',
+    '~/components/Header',
+    '~/components/ShopCart',
     '~/components/Home',
   ],
   auth: {

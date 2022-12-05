@@ -3,12 +3,14 @@
     <div class="container">
       <nav class="header__nav">
         <div class="header__logo">
-          <img
-            src="@/assets/icon/Header/Logo.png"
-            alt="Logo"
-            width="150"
-            height="30"
-          />
+          <nuxt-link to="/">
+            <img
+              src="@/assets/icon/Header/Logo.png"
+              alt="Logo"
+              width="150"
+              height="30"
+            />
+          </nuxt-link>
         </div>
         <div class="header__catalog">
           <button
@@ -36,11 +38,13 @@
             <Badge />
           </li>
           <li class="header__list-item">
-            <img
-              src="@/assets/icon/Header/shoppingCart.svg"
-              alt="shoppingCart"
-            />
-            <p>Корзина</p>
+            <nuxt-link to="/shopcart">
+              <img
+                src="@/assets/icon/Header/shoppingCart.svg"
+                alt="shoppingCart"
+              />
+              <p>Корзина</p>
+            </nuxt-link>
             <Badge />
           </li>
         </ul>
@@ -236,6 +240,9 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      a {
+        display: contents;
+      }
     }
     &-item:first-child {
       .header__badge {

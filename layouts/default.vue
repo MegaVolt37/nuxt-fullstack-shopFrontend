@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <the-header />
     <section>
       <slot />
@@ -12,5 +12,9 @@
 export default {};
 </script>
 
-<style>
+<style lang="scss" scoped>
+.page {
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
 </style>

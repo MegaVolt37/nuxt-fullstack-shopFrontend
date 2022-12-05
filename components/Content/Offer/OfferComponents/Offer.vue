@@ -32,7 +32,9 @@
       </div>
     </div>
     <div class="offer__bottom">
-      <button class="offer__button-active">В корзину</button>
+      <button class="offer__button-active" @click="addToCart()">
+        В корзину
+      </button>
       <button class="offer__button-lock" v-if="false">В корзину</button>
     </div>
   </div>
@@ -42,6 +44,20 @@ import BadgeSale from "../../Badge/BadgeSale.vue";
 import Rating from "../../Rating/Rating.vue";
 export default {
   name: "Offer",
+  methods: {
+    async addToCart() {
+      try {
+        await this.$http.post(
+          `http://localhost:5000/api/cart/add/${this.offer._id}`,
+          {
+            count: 1,
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
   props: {
     offer: Object,
     indexBlok: Number,
