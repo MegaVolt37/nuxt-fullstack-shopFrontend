@@ -61,7 +61,7 @@ export default {
     text: String,
     placeholder: String,
     idStyle: String,
-    value: [String.Number],
+    value: [String, Number, Boolean],
     getCheckbox: Boolean,
   },
 };

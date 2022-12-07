@@ -69,11 +69,11 @@ export default defineNuxtComponent({
               fullName: this.formData.fullName,
             },
           });
-          this.formData.email = ""
-          this.formData.password = ""
-          this.formData.currentPassword = ""
-          this.formData.fullName = ""
-          navigateTo('/')
+          this.formData.email = "";
+          this.formData.password = "";
+          this.formData.currentPassword = "";
+          this.formData.fullName = "";
+          navigateTo("/");
         } catch (error) {
           console.log(error);
         }

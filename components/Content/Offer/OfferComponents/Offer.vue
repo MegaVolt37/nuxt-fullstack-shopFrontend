@@ -42,9 +42,12 @@
 <script>
 import BadgeSale from "../../Badge/BadgeSale.vue";
 import Rating from "../../Rating/Rating.vue";
+import { mapActions } from "pinia";
+import { storeHeader } from "~/store/Header";
 export default {
   name: "Offer",
   methods: {
+    ...mapActions(storeHeader, ["getCountCart"]),
     async addToCart() {
       try {
         await this.$http.post(
@@ -53,6 +56,7 @@ export default {
             count: 1,
           }
         );
+        this.getCountCart();
       } catch (error) {
         console.log(error);
       }

@@ -1,7 +1,7 @@
 <template>
   <div class="cart__item">
     <div class="cart__item-checkbox">
-      <checkbox :idStyle="item._id" />
+      <checkbox :idStyle="item._id" @getCheckbox="getCheckbox" :value="check" />
     </div>
     <img
       class="cart__item-img"
@@ -10,7 +10,7 @@
     />
     <div class="cart__item-content">
       <h5 class="cart__item-content__title">
-        {{item.name}}
+        {{ item.name }}
       </h5>
       <div class="cart__item-content__price">
         <div class="price__card">
@@ -26,7 +26,12 @@
       </div>
     </div>
     <div class="cart__item-choiser">
-      <choiser @getChoise="getChoise" :start="value" :min="1" :max="item.countStorage" />
+      <choiser
+        @getChoise="getChoise"
+        :start="value"
+        :min="1"
+        :max="item.countStorage"
+      />
     </div>
     <div class="cart__item-price">
       <p>80,10 ₽</p>
@@ -41,16 +46,35 @@ export default {
   data() {
     return {
       value: 2,
+      check: false,
     };
   },
   methods: {
     getChoise(value) {
       this.value = value;
     },
+    getCheckbox(value) {
+      this.$emit("getCheckbox", { id: this.item._id, check: value });
+    },
   },
+  watch: {
+    "checkedAll.length"(value) {
+      if (value) {
+        this.checkedAll.forEach((el) => {
+          if (el.id == this.item._id) {
+            this.check = true;
+          }
+        });
+      } else {
+        this.check = undefined;
+      }
+    },
+  },
+  emits: ["getCheckbox"],
   components: { checkbox },
   props: {
     item: Object,
+    checkedAll: Array,
   },
 };
 </script>

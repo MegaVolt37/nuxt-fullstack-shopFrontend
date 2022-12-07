@@ -45,7 +45,7 @@
               />
               <p>Корзина</p>
             </nuxt-link>
-            <Badge />
+            <Badge :count="readCountCart" />
           </li>
         </ul>
         <div
@@ -95,7 +95,9 @@
 import Badge from "./Content/Badge/Badge.vue";
 import HeaderCatalog from "./Content/Header/HeaderCatalog.vue";
 import ModalWindow from "./Content/ModalWindow.vue";
-export default {
+import { mapState, mapActions } from "pinia";
+import { storeHeader } from "~/store/Header";
+export default defineNuxtComponent({
   name: "Header",
   data() {
     return {
@@ -106,7 +108,20 @@ export default {
       modalTitleRegister: "Регистрация",
     };
   },
+  async beforeMount() {
+    if (this.$auth.loggedIn) {
+      this.getCountCart();
+    }
+  },
+  watch: {
+    async "$auth.loggedIn"(value) {
+      if (value) {
+        this.getCountCart();
+      }
+    },
+  },
   methods: {
+    ...mapActions(storeHeader, ["getCountCart"]),
     openCatalog() {
       this.isOpenCatalog = true;
     },
@@ -132,6 +147,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(storeHeader, ["readCountCart"]),
     readProfile() {
       return this.isLogin ? this.$auth.user.fullName : "Войти";
     },
@@ -147,7 +163,7 @@ export default {
     HeaderCatalog,
     ModalWindow,
   },
-};
+});
 </script>
 <style lang="scss">
 .header {

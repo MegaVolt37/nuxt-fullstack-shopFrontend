@@ -1,6 +1,6 @@
 <template>
   <div class="header__badge">
-    <span>1</span>
+    <span>{{ count }}</span>
   </div>
 </template>
 <script>
@@ -8,7 +8,7 @@ export default {
   name: "Badge",
   computed: {},
   props: {
-    count: Number,
+    count: { type: Number, default: 0 },
   },
 };
 </script>
