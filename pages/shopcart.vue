@@ -2,7 +2,9 @@
   <div class="cart">
     <div class="container">
       <div class="cart__wrapper">
-        <h1 class="cart__title">Корзина <span>3</span></h1>
+        <h1 class="cart__title">
+          Корзина <span>{{ cartProducts.length }}</span>
+        </h1>
         <div class="cart__buttons">
           <div class="cart__buttons-choose" @click="checkedAll">
             <span></span>
@@ -12,16 +14,20 @@
             <p>Удалить выбранные</p>
           </div>
         </div>
-        <div class="cart__items">
-          <shop-cart-item
-            v-for="product in cartProducts"
-            :key="product._id"
-            :item="product"
-            @getCheckbox="getCheckbox"
-            :checkedAll="checkAll"
-          />
+        <div class="cart__content">
+          <div class="cart__items">
+            <shop-cart-item
+              v-for="product in cartProducts"
+              :key="product._id"
+              :item="product"
+              @getCheckbox="getCheckbox"
+              :checkedAll="checkAll"
+            />
+          </div>
+          <div class="cart__total">
+            <ShopCartTotal />
+          </div>
         </div>
-        <div class="cart__total"></div>
       </div>
     </div>
   </div>
@@ -38,10 +44,12 @@ export default defineNuxtComponent({
       activeCheckedAll: false,
     };
   },
-  async asyncData({ $http }) {
+  async asyncData() {
     try {
       return {
-        cartProducts: await $http.$get("http://localhost:5000/api/cart"),
+        cartProducts: await fetchAuth("/api/cart", {
+          method: "get",
+        }),
       };
     } catch (error) {
       console.log(error);
@@ -59,17 +67,13 @@ export default defineNuxtComponent({
             this.checkAll.splice(index, 1);
           }
         });
-        console.log("false", value);
       } else {
         const indexCheck = this.checkAll.findIndex(
           (item) => item.id === value.id
         );
-        console.log(indexCheck, this.$refs);
         if (indexCheck < 0) {
-          console.log("index < 0");
           this.checkAll.push(value);
         } else {
-          console.log("index > 0");
           this.checkAll[indexCheck] = value;
         }
       }
@@ -91,12 +95,12 @@ export default defineNuxtComponent({
         this.checkAll.forEach((el) => {
           console.log(el);
           promiseArray.push(
-            this.$http.delete(`http://localhost:5000/api/cart/${el.id}`)
+            fetchAuth(`/api/cart/${el.id}`, { method: "delete" })
           );
         });
         Promise.all(promiseArray)
           .then(() => {
-            this.$http.$get("http://localhost:5000/api/cart").then((res) => {
+            fetchAuth("/api/cart", { method: "get" }).then((res) => {
               this.cartProducts = res;
             });
             this.checkAll = [];
@@ -107,17 +111,6 @@ export default defineNuxtComponent({
             console.log(err);
           });
       }
-    },
-    removeOneProduct(id) {
-      console.log(id);
-      return new Promise((resolve, reject) => {
-        this.$http
-          .delete(`http://localhost:5000/api/cart/${id}`)
-          .then(() => {
-            resolve();
-          })
-          .catch(() => reject());
-      });
     },
   },
 });
@@ -153,6 +146,7 @@ export default defineNuxtComponent({
       justify-content: center;
     }
   }
+  
   .cart__buttons {
     display: flex;
     align-items: center;
@@ -196,6 +190,16 @@ export default defineNuxtComponent({
         color: #ff6633;
       }
     }
+  }
+  .cart__content {
+    display: flex;
+    gap: 40px;
+  }
+  .cart__items {
+    flex: 1 0 auto;
+  }
+  .cart__total {
+    height: fit-content;
   }
 }
 </style>

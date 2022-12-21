@@ -18,7 +18,7 @@
         />
       </div>
     </div>
-    <button class="modal__auth-login" @click="sendLogin">Вход</button>
+    <button class="modal__auth-login" @click="login(formData)">Вход</button>
     <div class="modal__auth-buttons">
       <button
         class="modal__auth-buttons-register"
@@ -32,9 +32,9 @@
 </template>
 
 <script>
-// import { mapActions } from "pinia";
-// import { storeAuth } from "~/store/Auth";
-export default {
+import { mapActions,mapState } from "pinia";
+import { storeAuth } from "~/store/Auth";
+export default defineNuxtComponent({
   data() {
     return {
       formData: {
@@ -43,21 +43,14 @@ export default {
       },
     };
   },
-  computed: {},
+  computed: {
+    ...mapState(storeAuth, ["getLogin"]),
+  },
   methods: {
-    async sendLogin() {
-      try {
-        await this.$auth.loginWith("local", {
-          body: this.formData,
-        });
-        this.$emit("closeModal");
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    ...mapActions(storeAuth, ["login"]),
   },
   emits: ["openRegister", "closeModal"],
-};
+});
 </script>
 
 <style lang="scss" scoped>

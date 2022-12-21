@@ -39,6 +39,7 @@ export default defineNuxtComponent({
       res: "",
     };
   },
+  middleware: ["auth"],
   computed: {
     ...mapState(storeCatalog, ["Catalog", "getProductCatalog"]),
   },

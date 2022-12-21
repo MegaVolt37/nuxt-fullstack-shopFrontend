@@ -35,11 +35,6 @@
 <script>
 export default {
   name: "Articles",
-  data() {
-    return {
-      posts: "",
-    };
-  },
   props: {
     Articles: Array,
   },

@@ -26,7 +26,7 @@
           <input type="text" placeholder="Найти товар" />
           <img src="@/assets/icon/Header/search.svg" alt="search" />
         </div>
-        <ul class="header__list" v-if="isLogin">
+        <ul class="header__list" v-if="getLogin">
           <li class="header__list-item">
             <img src="@/assets/icon/Header/IconFavorites.svg" alt="Favorites" />
             <p>Избранное</p>
@@ -50,11 +50,11 @@
         </ul>
         <div
           class="header__profile"
-          :class="{ not_auth: !isLogin }"
+          :class="{ not_auth: !getLogin }"
           @click="showAuth"
         >
           <img
-            v-if="isLogin"
+            v-if="getLogin"
             class="header__profile-avatar"
             src="@/assets/img/avatar.png"
             alt="Avatar"
@@ -97,6 +97,7 @@ import HeaderCatalog from "./Content/Header/HeaderCatalog.vue";
 import ModalWindow from "./Content/ModalWindow.vue";
 import { mapState, mapActions } from "pinia";
 import { storeHeader } from "~/store/Header";
+import { storeAuth } from "~/store/Auth";
 export default defineNuxtComponent({
   name: "Header",
   data() {
@@ -109,12 +110,12 @@ export default defineNuxtComponent({
     };
   },
   async beforeMount() {
-    if (this.$auth.loggedIn) {
+    if (this.getLogin) {
       this.getCountCart();
     }
   },
   watch: {
-    async "$auth.loggedIn"(value) {
+    async getLogin(value) {
       if (value) {
         this.getCountCart();
       }
@@ -129,7 +130,7 @@ export default defineNuxtComponent({
       this.isOpenCatalog = false;
     },
     showAuth() {
-      if (!this.isLogin) {
+      if (!this.getLogin) {
         this.isShowAuth = true;
       } else {
         this.$auth.logout();
@@ -148,14 +149,12 @@ export default defineNuxtComponent({
   },
   computed: {
     ...mapState(storeHeader, ["readCountCart"]),
+    ...mapState(storeAuth, ["getLogin","getUser"]),
     readProfile() {
-      return this.isLogin ? this.$auth.user.fullName : "Войти";
+      return this.getLogin ? this.getUser?.fullName : "Войти";
     },
     styleSearch() {
-      return this.isLogin ? "" : "max-width: none";
-    },
-    isLogin() {
-      return this.$auth.loggedIn;
+      return this.getLogin ? "" : "max-width: none";
     },
   },
   components: {

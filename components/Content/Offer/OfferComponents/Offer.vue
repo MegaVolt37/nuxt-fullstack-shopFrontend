@@ -50,10 +50,11 @@ export default {
     ...mapActions(storeHeader, ["getCountCart"]),
     async addToCart() {
       try {
-        await this.$http.post(
-          `http://localhost:5000/api/cart/add/${this.offer._id}`,
+        await fetchAuth(
+          `/api/cart/add/${this.offer._id}`,
           {
-            count: 1,
+            method: "post",
+            body:{count: 1}
           }
         );
         this.getCountCart();

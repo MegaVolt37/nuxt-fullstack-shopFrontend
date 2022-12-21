@@ -8,8 +8,8 @@ export const storeHeader = defineStore('Header', {
   actions: {
     async getCountCart() {
       try {
-        const data = await $http.$get(
-          "http://localhost:5000/api/cart/count/"
+        const data = await fetchAuth(
+          "/api/cart/count/"
         );
         this.countCart = data
       } catch (error) {

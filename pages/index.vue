@@ -23,12 +23,10 @@
 <script>
 import ImageSuggestionCard from "~/assets/img/Home/SuggestionCard.png";
 import ImageSuggestionProduct from "~/assets/img/Home/SuggestionProduct.png";
-// import { mapGetters } from "vuex";
 export default defineNuxtComponent({
+  name: "Home",
   data() {
     return {
-      Arr: "",
-      productArray: [],
       Suggestions: [
         {
           title: "Оформите карту «Северяночка»",
@@ -41,87 +39,26 @@ export default defineNuxtComponent({
           image: ImageSuggestionProduct,
         },
       ],
-      mountains: "",
     };
   },
-  computed: {
-    M() {
-      return this.Arr ? this.Arr : this.hello;
-    },
-    // ...mapGetters([
-    //   "getHomeProductActions",
-    //   "getHomeProductNews",
-    //   "getHomeArticles",
-    // ]),
-    Process() {
-      return this.$config.API_BASE_URL;
-    },
-    m() {
-      return this.hello;
-    },
+  async setup() {
+    const [stock, news, posts] = await Promise.all([
+      fetchAuth("/api/catalog/product/stock", { method: "get" }),
+      fetchAuth("/api/catalog/product/news", { method: "get" }),
+      fetchAuth("/api/catalog/post", { method: "get" }),
+    ]);
+    const arrayProduct = [
+      { Title: "Акции", items: stock },
+      { Title: "Новинки", items: news },
+    ];
+    return {
+      arrayProduct,
+      posts,
+    };
   },
-  created() {
-    this.readProducts();
-  },
-  methods: {
-    async remove(id) {
-      try {
-        await $fetch(`http://localhost:5000/api/posts/${id}`, {
-          method: "DELETE",
-        });
-        this.hello = await $fetch("http://localhost:5000/api/posts");
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async addPost(value) {
-      console.log(value);
-      try {
-        await $http.$post("http://localhost:5000/api/posts", {
-          body: { text: value },
-        });
-        this.hello = await $fetch("http://localhost:5000/api/posts");
-      } catch (e) {
-        throw e;
-      }
-    },
-    readProducts() {
-      if ((this.getHomeProductActions, this.getHomeProductNews)) {
-        this.productArray.push(
-          { Title: "Акции", items: this.getHomeProductActions },
-          { Title: "Новинки", items: this.getHomeProductNews },
-          { Title: "Покупали раньше", items: this.getHomeProductNews }
-        );
-      }
-    },
-    set() {
-      this.$store.dispatch("setLists", 5);
-    },
-  },
-  async asyncData({ $http }) {
-    const arrayProduct = [];
-    try {
-      const productsStock = await $http.$get(
-        "http://localhost:5000/api/catalog/product/stock"
-      );
-      const productsNews = await $http.$get(
-        "http://localhost:5000/api/catalog/product/news"
-      );
-      arrayProduct.push(
-        { Title: "Акции", items: productsStock },
-        { Title: "Новинки", items: productsNews }
-      );
-      return {
-        hello: await $fetch("http://localhost:5000/api/posts"),
-        posts: await $http.$get("http://localhost:5000/api/catalog/post"),
-        arrayProduct,
-      };
-    } catch {}
-  },
-
   head() {
     return {
-      title: "Главная",
+      title: "Главная страница",
       meta: [
         {
           hid: "description",
