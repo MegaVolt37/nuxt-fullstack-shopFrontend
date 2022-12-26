@@ -18,7 +18,7 @@
         />
       </div>
     </div>
-    <button class="modal__auth-login" @click="login(formData)">Вход</button>
+    <button class="modal__auth-login" @click="sendLogin">Вход</button>
     <div class="modal__auth-buttons">
       <button
         class="modal__auth-buttons-register"
@@ -48,6 +48,11 @@ export default defineNuxtComponent({
   },
   methods: {
     ...mapActions(storeAuth, ["login"]),
+    sendLogin() {
+      this.login(this.formData).then(() => {
+        this.$emit('closeModal')
+      })
+    },
   },
   emits: ["openRegister", "closeModal"],
 });

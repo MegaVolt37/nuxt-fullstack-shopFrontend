@@ -1,19 +1,25 @@
 import { FetchOptions } from "ohmyfetch";
 import { storeError } from '~/store/Error';
+import { storeAuth } from '~/store/Auth';
 export const fetchAuth = (url: string, opts?: FetchOptions) => {
   const config = useRuntimeConfig()
   const err = storeError()
+  const auth = storeAuth()
   const baseUrl = config.public.baseURL
-  const token = useCookie('token');
+  const tokenState = useState('token')
   const headers: HeadersInit = {
     ...(opts?.headers || {}),
-    ...(token && { Authorization: `Bearer ${token.value}` }),
+    ...(tokenState && { Authorization: `Bearer ${tokenState.value}` }),
   };
-  return $fetch(baseUrl+url, { ...opts, headers })
-  .catch((e) => {
-    err.setError(e)
-    setTimeout(() => {
-      err.setError("")
-    }, 3000);
-  });
+  return $fetch(baseUrl + url, { ...opts, headers })
+    .catch((e) => {
+      if (e.status === 403) {
+        auth.logout();
+      } else {
+        err.setError(e)
+        setTimeout(() => {
+          err.setError("")
+        }, 3000);
+      }
+    });
 };

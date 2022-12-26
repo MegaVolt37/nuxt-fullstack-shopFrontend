@@ -26,7 +26,7 @@
           <input type="text" placeholder="Найти товар" />
           <img src="@/assets/icon/Header/search.svg" alt="search" />
         </div>
-        <ul class="header__list" v-if="getLogin">
+        <ul class="header__list" v-if="isLogin()">
           <li class="header__list-item">
             <img src="@/assets/icon/Header/IconFavorites.svg" alt="Favorites" />
             <p>Избранное</p>
@@ -50,11 +50,11 @@
         </ul>
         <div
           class="header__profile"
-          :class="{ not_auth: !getLogin }"
+          :class="{ not_auth: !isLogin() }"
           @click="showAuth"
         >
           <img
-            v-if="getLogin"
+            v-if="isLogin()"
             class="header__profile-avatar"
             src="@/assets/img/avatar.png"
             alt="Avatar"
@@ -83,12 +83,6 @@
     >
       <header-register-block @register="closeModalRegister" />
     </modal-window>
-    <!-- <ul>
-      <li>
-        <nuxt-link to="/todos">Домой</nuxt-link>
-      </li>
-    </ul>
-    <button @click="plus">click</button> -->
   </header>
 </template>
 <script>
@@ -110,7 +104,7 @@ export default defineNuxtComponent({
     };
   },
   async beforeMount() {
-    if (this.getLogin) {
+    if (isLogin()) {
       this.getCountCart();
     }
   },
@@ -123,6 +117,7 @@ export default defineNuxtComponent({
   },
   methods: {
     ...mapActions(storeHeader, ["getCountCart"]),
+    ...mapActions(storeAuth, ["logout"]),
     openCatalog() {
       this.isOpenCatalog = true;
     },
@@ -130,10 +125,10 @@ export default defineNuxtComponent({
       this.isOpenCatalog = false;
     },
     showAuth() {
-      if (!this.getLogin) {
+      if (!isLogin()) {
         this.isShowAuth = true;
       } else {
-        this.$auth.logout();
+        this.logout();
       }
     },
     openRegister() {
@@ -149,12 +144,12 @@ export default defineNuxtComponent({
   },
   computed: {
     ...mapState(storeHeader, ["readCountCart"]),
-    ...mapState(storeAuth, ["getLogin","getUser"]),
+    ...mapState(storeAuth, ["getLogin", "getUser"]),
     readProfile() {
-      return this.getLogin ? this.getUser?.fullName : "Войти";
+      return isLogin() ? this.getUser?.fullName : "Войти";
     },
     styleSearch() {
-      return this.getLogin ? "" : "max-width: none";
+      return isLogin() ? "" : "max-width: none";
     },
   },
   components: {

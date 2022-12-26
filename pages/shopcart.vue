@@ -3,7 +3,7 @@
     <div class="container">
       <div class="cart__wrapper">
         <h1 class="cart__title">
-          Корзина <span>{{ cartProducts.length }}</span>
+          Корзина <span>{{ cartProducts?.length }}</span>
         </h1>
         <div class="cart__buttons">
           <div class="cart__buttons-choose" @click="checkedAll">
@@ -25,7 +25,7 @@
             />
           </div>
           <div class="cart__total">
-            <ShopCartTotal />
+            <ShopCartTotal :countChecked="checkAll" @sendOrder="sendOrder" />
           </div>
         </div>
       </div>
@@ -112,6 +112,15 @@ export default defineNuxtComponent({
           });
       }
     },
+    async sendOrder() {
+      try {
+        const res = await fetchAuth("/api/cart", { method: "get" });
+        this.cartProducts = res;
+         this.getCountCart();
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 });
 </script>
@@ -146,7 +155,7 @@ export default defineNuxtComponent({
       justify-content: center;
     }
   }
-  
+
   .cart__buttons {
     display: flex;
     align-items: center;
@@ -200,6 +209,8 @@ export default defineNuxtComponent({
   }
   .cart__total {
     height: fit-content;
+    position: sticky;
+    top: 80px;
   }
 }
 </style>

@@ -14,28 +14,28 @@
       </h5>
       <div class="cart__item-content__price">
         <div class="price__card">
-          <span>44,50 ₽</span>
+          <span>{{ readPriceDiscount }} ₽</span>
           <p>С картой</p>
         </div>
         <div class="price__default">
-          <span>50,50 ₽</span>
+          <span>{{ division(item.price) }} ₽</span>
           <p>Обычная</p>
         </div>
         <p class="price__descr">за шт.</p>
-        <span class="price__stock">-10%</span>
+        <span class="price__stock" v-if="item?.stock">-{{ item?.stock }}%</span>
       </div>
     </div>
     <div class="cart__item-choiser">
       <choiser
         @getChoise="getChoise"
-        :start="value"
+        :start="item.countCart"
         :min="1"
         :max="item.countStorage"
       />
     </div>
     <div class="cart__item-price">
-      <p>80,10 ₽</p>
-      <span>82,10 ₽</span>
+      <p>{{ readPriceStock }} ₽</p>
+      <span v-if="item?.stock">{{ readPrice }} ₽</span>
     </div>
   </div>
 </template>
@@ -45,16 +45,29 @@ import checkbox from "../Content/Checkbox/checkbox.vue";
 export default {
   data() {
     return {
-      value: 2,
+      value: this.item.countCart,
       check: false,
     };
+  },
+  computed: {
+    readPrice() {
+      return (+division(this.item.price) * this.value).toFixed(2);
+    },
+    readPriceDiscount() {
+      return (+division(this.item.discount)).toFixed(2);
+    },
+    readPriceStock() {
+      return this.item?.stock
+        ? (+division(this.item?.priceStock) * this.value).toFixed(2)
+        : (this.readPrice * this.value).toFixed(2);
+    },
   },
   methods: {
     getChoise(value) {
       this.value = value;
     },
     getCheckbox(value) {
-      this.$emit("getCheckbox", { id: this.item._id, check: value });
+      this.$emit("getCheckbox", { id: this.item._id, check: value, price: this.item.priceStock ? +this.readPrice : null, price_stock: +this.readPriceStock, count: this.value });
     },
   },
   watch: {

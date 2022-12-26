@@ -22,7 +22,7 @@ export default {
   right: 10%;
   bottom: 10%;
   background-color: #fff;
-  border: 1px solid #e51d1d;
+  border: 2px solid #e51d1d;
   border-radius: 6px;
   padding: 5px 10px;
   animation-duration: 0.3s;
