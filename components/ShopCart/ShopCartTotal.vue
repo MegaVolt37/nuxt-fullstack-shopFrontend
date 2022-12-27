@@ -91,7 +91,7 @@ export default {
   &-block {
     display: grid;
     gap: 10px;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: max-content 1fr;
     span {
       text-align: right;
     }

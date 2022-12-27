@@ -23,8 +23,18 @@
           </button>
         </div>
         <div class="header__search" :style="styleSearch">
-          <input type="text" placeholder="Найти товар" />
-          <img src="@/assets/icon/Header/search.svg" alt="search" />
+          <input type="text" placeholder="Найти товар" v-model="search" />
+          <img
+            src="@/assets/icon/Header/search.svg"
+            alt="search"
+            @click="sendSearch"
+          />
+          <div class="header__search-result" v-if="resSearch.length && !err">
+            <p v-for="item in resSearch" :key="item._id">{{ item.name }}</p>
+          </div>
+          <div class="header__search-result" v-if="err">
+            <p :style="not_result">{{ err }}</p>
+          </div>
         </div>
         <ul class="header__list" v-if="isLogin()">
           <li class="header__list-item">
@@ -101,6 +111,9 @@ export default defineNuxtComponent({
       isShowRegister: false,
       modalTitle: "Вход",
       modalTitleRegister: "Регистрация",
+      search: "",
+      resSearch: [],
+      err: "",
     };
   },
   async beforeMount() {
@@ -109,6 +122,15 @@ export default defineNuxtComponent({
     }
   },
   watch: {
+    async resSearch(value) {
+      if (!value.length && this.search) {
+        this.err = "Товар с таким названием отсутствует";
+      } else if (!value.length && !this.search) {
+        this.err = "";
+      } else {
+        this.err = "";
+      }
+    },
     async getLogin(value) {
       if (value) {
         this.getCountCart();
@@ -118,6 +140,17 @@ export default defineNuxtComponent({
   methods: {
     ...mapActions(storeHeader, ["getCountCart"]),
     ...mapActions(storeAuth, ["logout"]),
+    async sendSearch() {
+      try {
+        const res = await fetchAuth("/api/catalog/product/", {
+          method: "get",
+          params: { name: this.search },
+        });
+        this.resSearch = res;
+      } catch (error) {
+        console.error(error);
+      }
+    },
     openCatalog() {
       this.isOpenCatalog = true;
     },
@@ -150,6 +183,9 @@ export default defineNuxtComponent({
     },
     styleSearch() {
       return isLogin() ? "" : "max-width: none";
+    },
+    not_result() {
+      return this.err ? "font-size: 15px;" : ""
     },
   },
   components: {
@@ -236,6 +272,21 @@ export default defineNuxtComponent({
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
+    }
+    .header__search-result {
+      position: absolute;
+      left: 0;
+      top: 43px;
+      background-color: #fff;
+      border: 1px solid #70c05b;
+      border-radius: 4px;
+      padding: 0 10px;
+      p {
+        padding: 5px 0;
+      }
+      p + p {
+        border-top: 1px solid #000;
+      }
     }
   }
   .header__list {

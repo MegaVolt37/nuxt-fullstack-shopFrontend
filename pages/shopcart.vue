@@ -81,7 +81,13 @@ export default defineNuxtComponent({
     checkedAll() {
       if (!this.activeCheckedAll) {
         this.cartProducts.forEach((el, index) => {
-          this.checkAll[index] = { id: el._id, check: true };
+          this.checkAll[index] = {
+            id: el._id,
+            check: true,
+            price: el.price,
+            price_stock: el.priceStock,
+            count: el.countCart,
+          };
         });
         this.activeCheckedAll = true;
       } else {
@@ -93,7 +99,6 @@ export default defineNuxtComponent({
       if (this.checkAll.length) {
         let promiseArray = [];
         this.checkAll.forEach((el) => {
-          console.log(el);
           promiseArray.push(
             fetchAuth(`/api/cart/${el.id}`, { method: "delete" })
           );
@@ -116,7 +121,7 @@ export default defineNuxtComponent({
       try {
         const res = await fetchAuth("/api/cart", { method: "get" });
         this.cartProducts = res;
-         this.getCountCart();
+        this.getCountCart();
       } catch (error) {
         console.error(error);
       }
