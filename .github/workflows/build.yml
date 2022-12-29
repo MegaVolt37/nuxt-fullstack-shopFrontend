@@ -1,0 +1,12 @@
+name: Demo
+on: push
+jobs:
+  building project:
+    runs-on: windows-latest
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v3
+      - name: npm install
+        run: npm ci
+      - name: Build
+        run: npm run build
