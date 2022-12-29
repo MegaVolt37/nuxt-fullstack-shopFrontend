@@ -1,25 +1,27 @@
 <template>
-  <div class="catalog">
-    <div class="container">
-      <h1 class="catalog__title" @click="getImgUrl()">Каталог</h1>
-      <h3 @click="remove(allCards[0]?._id)">{{ allCards[0]?.name }}</h3>
-      <h3>{{ allCards[0]?.description }}</h3>
-      <img :src="allCards[0]?.image" alt="" />
-      <input
-        class="downloadFile"
-        type="file"
-        @change="changeHandler"
-        accept="image/jpeg,image/png,image/gif"
-      />
-      <div class="catalog__content" @click="addPost">
-        <div
-          class="catalog__content-item"
-          v-for="(catalog, index) in 5"
-          :key="index"
-        >
-          <img :src="img" alt="" />
-          <p>{{ catalog.name }}</p>
-          <div class="gradient"></div>
+  <div>
+    <div class="catalog">
+      <div class="container">
+        <h1 class="catalog__title" @click="getImgUrl()">Каталог</h1>
+        <h3 @click="remove(allCards[0]?._id)">{{ allCards[0]?.name }}</h3>
+        <h3>{{ allCards[0]?.description }}</h3>
+        <img :src="allCards[0]?.image" alt="" />
+        <input
+          class="downloadFile"
+          type="file"
+          @change="changeHandler"
+          accept="image/jpeg,image/png,image/gif"
+        />
+        <div class="catalog__content" @click="addPost">
+          <div
+            class="catalog__content-item"
+            v-for="(catalog, index) in 5"
+            :key="index"
+          >
+            <img :src="img" alt="" />
+            <p>{{ catalog.name }}</p>
+            <div class="gradient"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -46,7 +48,9 @@ export default defineNuxtComponent({
   async asyncData({}) {
     try {
       return {
-        allCards: await $fetch("http://localhost:5000/api/catalog"),
+        allCards: await fetchAuth("/api/catalog", {
+          method: "get",
+        }),
       };
     } catch (e) {
       console.log(e);
@@ -71,17 +75,17 @@ export default defineNuxtComponent({
     async remove(id) {
       console.log(id);
       try {
-        await $fetch(`http://localhost:5000/api/catalog/${id}`, {
+        await fetchAuth(`http://localhost:5000/api/catalog/${id}`, {
           method: "DELETE",
         });
-        this.allCards = await $fetch("http://localhost:5000/api/catalog");
+        this.allCards = await fetchAuth("http://localhost:5000/api/catalog");
       } catch (e) {
         console.log(e);
       }
     },
     async addPost() {
       try {
-        await $fetch("http://localhost:5000/api/catalog", {
+        await fetchAuth("http://localhost:5000/api/catalog", {
           method: "POST",
           body: {
             name: "request.body.name",

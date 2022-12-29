@@ -1,12 +1,21 @@
 <template>
   <div class="offer__wrapper">
-    <div class="offer__top">
-      <img src="@/assets/img/Products/image1.jpg" alt="" />
-      <div class="offer__top-favorites">
-        <img src="@/assets/icon/Header/IconFavorites.svg" alt="IconFaforites" />
+    <nuxt-link :to="readRouteCard">
+      <div class="offer__top">
+        <img src="@/assets/img/Products/image1.jpg" alt="" />
+        <div class="offer__top-favorites">
+          <img
+            src="@/assets/icon/Header/IconFavorites.svg"
+            alt="IconFaforites"
+          />
+        </div>
+        <BadgeSale
+          v-if="indexBlok == 0 && offer?.stock"
+          :count="offer?.stock"
+        />
       </div>
-      <BadgeSale v-if="indexBlok == 0 && offer?.stock" :count="offer?.stock" />
-    </div>
+    </nuxt-link>
+
     <div class="offer__middle">
       <div class="offer__price">
         <div class="offer__price-card">
@@ -44,23 +53,30 @@ import BadgeSale from "../../Badge/BadgeSale.vue";
 import Rating from "../../Rating/Rating.vue";
 import { mapActions } from "pinia";
 import { storeHeader } from "~/store/Header";
+import { storeError } from "~/store/Error";
 export default {
   name: "Offer",
   methods: {
     ...mapActions(storeHeader, ["getCountCart"]),
+    ...mapActions(storeError, ["setSucess"]),
     async addToCart() {
       try {
-        await fetchAuth(
-          `/api/cart/add/${this.offer._id}`,
-          {
-            method: "post",
-            body:{count: 1}
-          }
-        );
+        const res = await fetchAuth(`/api/cart/add/${this.offer._id}`, {
+          method: "post",
+          body: { count: 1 },
+        });
+        if (res) {
+          this.setSucess("Товар успешно добавлен в корзину");
+        }
         this.getCountCart();
       } catch (error) {
         console.log(error);
       }
+    },
+  },
+  computed: {
+    readRouteCard() {
+      return `/product/${this.offer._id}`;
     },
   },
   props: {
@@ -78,7 +94,7 @@ export default {
   background-color: #fff;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  flex: 1;
+  flex: 0 1 auto;
   &:hover {
     box-shadow: 4px 8px 16px rgba(255, 102, 51, 0.2);
   }

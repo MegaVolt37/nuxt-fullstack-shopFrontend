@@ -1,6 +1,6 @@
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('vue:error', (..._args) => {
-    console.log('vue:error', $fetch)
+    console.log('vue:error', _args)
     // if (_args[0].statusCode == 404) {
     //   navigateTo('/404')
     // }

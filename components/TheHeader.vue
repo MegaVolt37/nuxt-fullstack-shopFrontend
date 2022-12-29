@@ -13,14 +13,16 @@
           </nuxt-link>
         </div>
         <div class="header__catalog">
-          <button
-            @click="openCatalog"
-            @mouseover="openCatalog"
-            @mouseleave="closeCatalog"
-          >
-            <img src="@/assets/icon/Header/menu.svg" alt="menu" />Каталог
-            <HeaderCatalog v-if="isOpenCatalog" />
-          </button>
+          <nuxt-link to="/catalog">
+            <button
+              @click="openCatalog"
+              @mouseover="openCatalog"
+              @mouseleave="closeCatalog"
+            >
+              <img src="@/assets/icon/Header/menu.svg" alt="menu" />Каталог
+              <HeaderCatalog v-if="isOpenCatalog" />
+            </button>
+          </nuxt-link>
         </div>
         <div class="header__search" :style="styleSearch">
           <input type="text" placeholder="Найти товар" v-model="search" />
@@ -185,7 +187,7 @@ export default defineNuxtComponent({
       return isLogin() ? "" : "max-width: none";
     },
     not_result() {
-      return this.err ? "font-size: 15px;" : ""
+      return this.err ? "font-size: 15px;" : "";
     },
   },
   components: {
