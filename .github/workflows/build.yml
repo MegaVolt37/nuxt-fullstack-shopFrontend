@@ -1,4 +1,4 @@
-name: Building Project
+name: Build Project
 on: push
 jobs:
   runs-on: windows-latest
