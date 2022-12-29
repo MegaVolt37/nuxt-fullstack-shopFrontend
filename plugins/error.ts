@@ -26,8 +26,5 @@ export default defineNuxtPlugin((nuxtApp) => {
         navigateTo('/500')
         break
     }
-    // if (process.client) {
-    //   console.log(..._args)
-    // }
   }
 })
