@@ -3,7 +3,6 @@
     <div class="catalog">
       <div class="container">
         <h1 class="catalog__title" @click="getImgUrl()">Каталог</h1>
-        
         <h3 @click="remove(allCards[0]?._id)">{{ allCards[0]?.name }}</h3>
         <h3>{{ allCards[0]?.description }}</h3>
         <img :src="allCards[0]?.image" alt="" />
