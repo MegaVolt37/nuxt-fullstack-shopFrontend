@@ -15,7 +15,7 @@ jobs:
       - name: Get repository
         uses: actions/checkout@v3
       - name: npm install
-        run: npm ci
+        run: npm install
       - name: Get env build
         run:
           echo "${{ env.NODE_ENV }}"
@@ -31,7 +31,7 @@ jobs:
       - name: Get repository
         uses: actions/checkout@v3
       - name: npm install
-        run: npm ci
+        run: npm install
       - name: Get env deploy
         run:
           echo "${{ env.NODE_ENV }}"
