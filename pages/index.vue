@@ -19,6 +19,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import ImageSuggestionCard from "~/assets/img/Home/SuggestionCard.png";
 import ImageSuggestionProduct from "~/assets/img/Home/SuggestionProduct.png";
