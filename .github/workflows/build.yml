@@ -22,12 +22,12 @@ jobs:
           echo "${{ env.GH_SECRET }}"
       - name: Build
         run: npm run build
-  deploy:
-    runs-on: windows-latest
-    steps:
-      - name: Get repository
-        uses: actions/checkout@v3
-      - name: npm install
-        run: npm install
-      - name: Build
-        run: npm run build
+  #deploy:
+  #  runs-on: windows-latest
+  #  steps:
+  #    - name: Get repository
+  #      uses: actions/checkout@v3
+  #    - name: npm install
+  #      run: npm install
+  #    - name: Build
+  #      run: npm run build
