@@ -14,12 +14,12 @@ jobs:
     steps:
       - name: Get repository
         uses: actions/checkout@v3
+      - name: npm install
+        run: npm ci
       - name: Get env build
         run:
           echo "${{ env.NODE_ENV }}"
           echo "${{ env.GH_SECRET }}"
-      - name: npm install
-        run: npm ci
       - name: Build
         run: npm run build
   deploy:
@@ -30,11 +30,11 @@ jobs:
     steps:
       - name: Get repository
         uses: actions/checkout@v3
+      - name: npm install
+        run: npm ci
       - name: Get env deploy
         run:
           echo "${{ env.NODE_ENV }}"
           echo "${{ env.GH_SECRET }}"
-      - name: npm install
-        run: npm ci
       - name: Build
         run: npm run build
