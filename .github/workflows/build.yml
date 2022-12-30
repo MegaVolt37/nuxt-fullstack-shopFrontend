@@ -3,25 +3,25 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - '.github/workflows/*'
-#env:
-#  NODE_ENV: production
-#  GH_SECRET: ${{ secrets.DEPLOY_SECRET }}
+    #paths-ignore:
+    #  - '.github/workflows/*'
+env:
+  NODE_ENV: production
+  GH_SECRET: ${{ secrets.DEPLOY_SECRET }}
 jobs:
-  #building:
-  #  runs-on: windows-latest
-  #  steps:
-  #    - name: Get repository
-  #      uses: actions/checkout@v3
-  #    - name: npm install
-  #      run: npm install
-  #    - name: Get env build
-  #      run:
-  #        echo "${{ env.NODE_ENV }}"
-  #        echo "${{ env.GH_SECRET }}"
-  #    - name: Build
-  #      run: npm run build
+  building:
+    runs-on: windows-latest
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v3
+      - name: npm install
+        run: npm install
+      - name: Get env build
+        run: |
+          echo "${{ env.NODE_ENV }}"
+          echo "${{ env.GH_SECRET }}"
+      - name: Build
+        run: npm run build
   deploy:
     runs-on: windows-latest
     steps:
