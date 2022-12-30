@@ -10,7 +10,6 @@
   </div>
   <!-- <NuxtLayout>
     <NuxtPage />
-    <Error v-if="getError" :error="getError" />
   </NuxtLayout> -->
 </template>
 <script>
