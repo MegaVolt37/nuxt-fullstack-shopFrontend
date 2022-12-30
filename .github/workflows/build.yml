@@ -7,7 +7,7 @@ on:
       - '.github/workflows/*'
 env:
   NODE_ENV: production
-  GH_SECRET: 23
+  GH_SECRET: ${{ secrets.DEPLOY_SECRET }}
 jobs:
   building:
     runs-on: windows-latest
@@ -24,6 +24,9 @@ jobs:
         run: npm run build
   deploy:
     runs-on: windows-latest
+    env:
+      NODE_ENV: production
+      GH_SECRET: 24
     steps:
       - name: Get repository
         uses: actions/checkout@v3
