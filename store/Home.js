@@ -1,7 +1,3 @@
-// import productsActions from "../../../data/productsActions.json";
-// import productNews from "../../../data/productsNews.json";
-// import Articles from "../../../data/productsArticles.json";
-
 export const state = () => ({
     productsActions,
     productNews,
